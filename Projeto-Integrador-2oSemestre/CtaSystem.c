@@ -17,9 +17,12 @@ typedef struct RegisterUser{
 	int cpf[13];
     char email[40];
     char endereco[30];
+    //porque o numero é um vetor?
+    //certo int numero;
     int numero[10];
     char complemento[15];
     char cidade_estado[12];
+    //porque o telefone é um vetor? Mesma observação nos outros registros
     long int telefone[13];
     char senha[32];
 } Register_st;
@@ -45,7 +48,7 @@ Usuario_st usuario[MAX];
 RegisterAdmin_st cadastrarAdmin[MAX];
 
 #pragma endregion
-
+//Separe com caracter -----------------------------------------------------------------------------
 #pragma region Login
 
 int login()
@@ -84,20 +87,21 @@ int login()
         scanf("%s", &user_entry[32]);
         printf("Senha: ");
         scanf("%s", &password_entry[32]);
+	//aqui você quer salvar em um vetor de char certo,scanf("%s", password_entry) 
         
         //descobre o usuario na lista(struct)
         //debugar o for e o login, pois nao esta funcionando
         for (i = 0; i < MAX; i++){
             printf("Dentro do for %d!\n",i);
-            if (!strcmp("", user_entry[32])){
+            if (!strcmp("", user_entry[32])){//para testar sem o [32] somente user_entry
                 printf("Nenhum usuário encontrado, abrindo cadastro!\n");
                 cadastroCliente();
             }else{
-                if (!strcmp(user_entry[32],usuario[i].login)){
+                if (!strcmp(user_entry[32],usuario[i].login)){//aqui o mesmo de cima
                     printf("Dentro do for e do IF USER %d!\n",i);
                     return i;
                 }else{
-                    if (!strcmp(user_entry[32],usuario[i].adminUser)){
+                    if (!strcmp(user_entry[32],usuario[i].adminUser)){//aqui idem
                         printf("Dentro do for do if e do IF ADMIN %d!\n",i);
                         return i;
                     }
@@ -106,7 +110,7 @@ int login()
         }
   
         //validacoes login
-        if (!strcmp(user_entry[32], usuario[i].login) && !strcmp(password_entry[32], usuario[i].senha)) {
+        if (!strcmp(user_entry[32], usuario[i].login) && !strcmp(password_entry[32], usuario[i].senha)) {//aqui também a senha e o user é string certo então no precisa do tamanho toda hora
             printf("Bem vindo %s\n", usuario[i].login);
             return ListClient();
         }else{
@@ -128,9 +132,10 @@ int login()
 #pragma region Funcao Include
 
 void IncludeUser(int codigo,char *nome,int cpf,char *email,char *endereco,int numero,char *complemento,char *cidade_estado,int telefone,char *senha){
-
+     //Perceba que você está testasdo o espaço no seu vetor de struct, como não foi cadastrado ninguém vai sempre entrar nesta condicional
+     //deve ser !=0
     if (codigo > MAX || strcmp(cadastrar[codigo].nome,"") == 0 || strcmp(cadastrar[codigo].email,"") == 0 || strcmp(cadastrar[codigo].endereco,"") == 0 || strcmp(cadastrar[codigo].complemento,"") == 0 || strcmp(cadastrar[codigo].cidade_estado,"") == 0 || strcmp(cadastrar[codigo].senha,"") == 0)
-    {
+    {    //inseir->inserir
         printf("Erro na inclusao,Favor inseir um valor menor que %d",MAX);
     }else if (codigo < 0){
         printf("Erro na inclusao,Favor inseir um valor menor que %d",codigo);
@@ -154,7 +159,7 @@ void IncludeUser(int codigo,char *nome,int cpf,char *email,char *endereco,int nu
 #pragma region Funcao Update
 
 void UpdateUser(int id,char *nome,int cpf,char *email,char *endereco,int numero,char *complemento,char *cidade_estado,int telefone,char *senha){
-
+   //aqui tem que tomar cuidado. è igual o include, precisa ver o que você quer fazer
     if (id > MAX || strcmp(cadastrar[id].nome,"") == 0 || strcmp(cadastrar[id].email,"") == 0 || strcmp(cadastrar[id].endereco,"") == 0 || strcmp(cadastrar[id].complemento,"") == 0 || strcmp(cadastrar[id].cidade_estado,"") == 0 || strcmp(cadastrar[id].senha,"") == 0)
     {
         printf("Erro na inclusao,Favor inseir um valor menor que %d",MAX);
@@ -336,6 +341,7 @@ int cadastroCliente()
     printf("Favor escolher uma opcao valida");
       break;
 }
+	//lembrando string no precisa do &
         printf("Nome: ");
         scanf(" %[^\n]s",&cadastrar[contador].nome);
         printf("CPF: ");
@@ -350,8 +356,8 @@ int cadastroCliente()
         scanf("%s", &cadastrar[contador].complemento);
         printf("Cidade-UF: ");
         scanf("%s", &cadastrar[contador].cidade_estado);
-        printf("Telefone (DDD)12345-6789: ");
-        scanf("%s", &cadastrar[contador].telefone);
+        printf("Telefone (DDD)12345-6789: ");//cuidado com o formato o telefone é inteiro não pode receber () e -
+        scanf("%s", &cadastrar[contador].telefone);//o telefone no é inteiro no seu registro??????????????
         printf("Senha: ");
         scanf("%s", &cadastrar[contador].senha);
     
